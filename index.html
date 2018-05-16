@@ -1,0 +1,184 @@
+<html>
+<head>
+	<title>Calculadora de gramaje</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <style>
+    	*{
+    		padding: 0;
+    		margin: 0;
+    		font-size:13px;
+    	}
+
+    	body{
+    		height: 100vh;
+    		width: 100vw;
+    	}
+    	.fs-col{
+    		background: transparent;
+    	}
+
+    	.col-lg-3{
+    		margin-top:15px;
+    	}
+    	.col-lg-12{
+    		margin-top: 30px;
+    	}
+    	#material-smpl{
+    		display:none;
+    	}
+	</style>
+</head>
+<body>
+
+	<div class="container fs-col" id="general-inp">
+		<div class="row">
+			<div class="col-lg-3 col-sm-6 col-xs-12" align="center" ><input type="text" id="ancho" class="form-control" placeholder="ancho"></div>
+			<div class="col-lg-3 col-sm-6 col-xs-12" align="center"><input type="text" id="largo" class="form-control" placeholder="largo"></div>
+			<div class="col-lg-3 col-sm-6 col-xs-12" align="center" ><input type="text" id="calibre" class="form-control" placeholder="calibre"></div>
+			<div class="col-lg-3 col-sm-6 col-xs-12">
+				<select align="center" class="form-control" id="material-slc">
+	    			<option disabled selected>material</option>
+	    			<option value="one">simple</option>
+	    			<option value="two">compuesto</option>
+	  			</select>
+  			</div>
+		</div>
+
+
+		<div class="row" id="material-smpl">
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<select align="center" class="form-control" id="material-smp-slc">
+	    			<option disabled selected>material</option>
+	    			<option value="0.93">polipropileno</option>
+	    			<option value="0.93">polietileno</option>
+	    			<option value="1.3">poliester</option>
+	    			<option value="1.3">nilon</option>
+	    			<option value="1">uno</option>
+	  			</select>
+  			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12" align="center" id="granaje"></div>
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+	<script>
+		var material = document.querySelector("#material-slc");
+		var pesoEspecifico = document.querySelector("#material-smp-slc")
+		var matSimpl = document.querySelector("#material-smpl");
+		var granaje = document.querySelector("#granaje");
+		var ancho = document.querySelector("#ancho");
+		var largo = document.querySelector("#largo");
+		var calibre = document.querySelector("#calibre");
+		var generalInp = document.querySelector("#general-inp")
+		var reg = /^\d+$/;
+		var regFloat = /^-?\d*(\.\d+)?$/
+		var anchoNum;
+		var anchoVal = false;
+		var largoNum;
+		var largoVal = false;
+		var calibreNum;
+		var calibreVal = false;
+		var pesoNum;
+		var pesoVal = false;
+
+		var valorTotal;
+		ancho.addEventListener("input", function(e){
+			console.log(ancho.value)
+			e.preventDefault();
+			if (ancho.value !== "" && !isNaN(ancho.value)){
+				anchoNum = parseFloat(ancho.value)
+				anchoVal = true;
+				granaje.innerHTML = "selecciona un largo";
+				
+			}
+			else if(isNaN(ancho.value)){
+				ancho.value = ""
+				anchoVal = false;
+				anchoNum = null;
+				granaje.innerHTML = "coloca un numero en ancho"
+			}
+			else{
+				granaje.innerHTML = "selecciona un ancho";
+				anchoNum = null;
+				anchoVal = false;
+			}
+		})
+		largo.addEventListener("input", function(e){
+
+			e.preventDefault();
+			if (largo.value !== "" && !isNaN(largo.value)){
+				largoNum = parseFloat(largo.value)
+			
+				largoVal = true;
+			}
+			else if(isNaN(largo.value)){
+				largoVal = false;
+				largo.value = ""
+			
+			}
+			else{
+
+				largoVal = false;
+			}
+
+		})
+		calibre.addEventListener("input", function(e){
+			e.preventDefault();
+			if (calibre.value !== "" && !isNaN(calibre.value)){
+				calibreNum = parseFloat(calibre.value)
+			
+				calibreVal = true;
+			}
+			else if(isNaN(calibre.value)){
+				calibreVal = false;
+				calibre.value = ""
+			
+			}
+			else{
+				calibreVal = false;
+			}
+		})
+		material.addEventListener("input", function(){
+			console.log(parseFloat(material.value)+12)
+			if (material.value === "two"){
+				matSimpl.selectedIndex = "0"
+				pesoVal = false;
+			}
+			else if (material.value === "one"){
+				matSimpl.style.display = "block"
+				pesoVal = false;
+			}
+		})
+		generalInp.addEventListener("input", function(){
+			if (anchoVal === true && largoVal === true && calibreVal === true && pesoVal === true){
+				valorTotal = anchoNum*largoNum*calibreNum*pesoNum
+				granaje.innerHTML = "gramaje: "+valorTotal
+			}
+			else{
+				granaje.innerHTML = "faltan datos"
+			}
+		})
+
+		pesoEspecifico.addEventListener("input", function(){
+			pesoVal = true;
+			pesoNum = parseFloat(pesoEspecifico.value)
+			console.log(pesoNum)
+		})
+
+		granaje.innerHTML = ""
+
+
+
+	</script>	
+</body>
+</html>
